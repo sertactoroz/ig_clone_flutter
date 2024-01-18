@@ -1,6 +1,9 @@
+// main.dart
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'widgets/bottom_navbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,120 +29,56 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
+  bool isLoading = true; // Set to false when loading is complete
+  // int _selectedIndex = 0;
   var current = WordPair.random();
 }
 
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Instagram Clone'),
-      ),
-      body: Column(
-        children: [
-          Text('A random idea:'),
-          Text(context.watch<MyAppState>().current.asLowerCase),
-        ],
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
-    );
+    bool isLoading = context.watch<MyAppState>().isLoading;
+
+    return isLoading
+        ? AppInit()
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Instagram Clone'),
+            ),
+            // body: pages[_selectedIndex],
+            bottomNavigationBar: CustomBottomNavigationBar(),
+          );
   }
 }
 
-class CustomBottomNavigationBar extends StatefulWidget {
-  @override
-  _CustomBottomNavigationBarState createState() =>
-      _CustomBottomNavigationBarState();
-}
-
-class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  PageController _pageController = PageController();
-  int _currentIndex = 0;
-
+class AppInit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Expanded(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
+    Future.delayed(Duration(seconds: 2), () {
+      context.read<MyAppState>().isLoading = false;
+      context.read<MyAppState>().notifyListeners();
+    });
+
+    return Scaffold(
+      body: Center(
+        child: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 28.0,
+              fontWeight: FontWeight.bold,
+            ),
             children: [
-              PageWidget(icon: Icons.home, label: 'Home'),
-              PageWidget(icon: Icons.search, label: 'Search'),
-              PageWidget(icon: Icons.add_box, label: 'Add'),
-              PageWidget(icon: Icons.favorite, label: 'Activity'),
-              PageWidget(icon: Icons.person, label: 'Profile'),
+              TextSpan(
+                text: 'Instagram',
+                style: TextStyle(color: Colors.green),
+              ),
+              TextSpan(
+                text: 'Clone',
+                style: TextStyle(color: Colors.grey),
+              ),
             ],
           ),
         ),
-        BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            _pageController.animateToPage(
-              index,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add_box),
-              label: 'Add',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Activity',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          backgroundColor: Colors.yellow, // Set the background color here
-        ),
-      ],
-    );
-  }
-}
-
-class PageWidget extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  PageWidget({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 48.0,
-            color: Colors.grey,
-          ),
-          SizedBox(height: 16.0),
-          Text(
-            label,
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-          ),
-        ],
       ),
     );
   }
