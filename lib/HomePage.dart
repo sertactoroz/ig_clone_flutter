@@ -65,8 +65,15 @@ class HomePage extends StatelessWidget {
               Divider(),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) => PostCard(),
+                  itemCount: 5,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      PostCard(),
+                      SizedBox(
+                          height:
+                              8.0), // Add a small space (adjust height as needed)
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -100,7 +107,7 @@ class MultiObjectWidget extends StatelessWidget {
                 "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png",
             name: "blank",
           ),
-          Text("blank"),
+          Text("User"),
         ],
       ),
     );

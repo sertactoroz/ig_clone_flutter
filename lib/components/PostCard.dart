@@ -15,7 +15,26 @@ class PostCard extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Text('Username'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text('Username'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Sponsored',
+                        style: TextStyle(
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               Spacer(),
               IconButton(
                 onPressed: () {},
@@ -23,7 +42,7 @@ class PostCard extends StatelessWidget {
               )
             ],
           ),
-          Image.network('https://picsum.photos/200/300'),
+          Image.network('https://picsum.photos/400/350'),
           Row(
             children: [
               IconButton(
@@ -47,9 +66,9 @@ class PostCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Text('Liked by'),
-              Text('Username'),
-              Text('and'),
+              Text('Liked by '),
+              Text('Username '),
+              Text('and '),
               Text('others'),
             ],
           ),
