@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     HomePage(),
     DiscoverPage(),
-    AddPostPage(),
+    // AddPostPage(),
     ReelsPage(),
     ProfilePage(),
   ];
