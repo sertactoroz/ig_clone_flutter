@@ -1,6 +1,28 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  late double _scrollOffset;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _scrollController = ScrollController();
+    _scrollOffset = 0;
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollOffset = _scrollController.offset;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,19 +173,46 @@ class ProfilePage extends StatelessWidget {
               ),
               Divider(),
               Expanded(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  children: List.generate(
-                    10,
-                    (index) => Container(
-                      margin: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage('https://picsum.photos/200/300'),
-                          fit: BoxFit.cover,
-                        ),
+                child: NestedScrollView(
+                  controller: _scrollController,
+                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      backgroundColor: Colors.white,
+                      actions: [],
+                      floating: true,
+                      pinned: true,
+                      snap: true,
+                      bottom: TabBar(
+                        controller: _tabController,
+                        indicatorColor: Colors.black,
+                        tabs: [
+                          Tab(icon: Icon(Icons.grid_on_outlined)),
+                          Tab(icon: Icon(Icons.live_tv_outlined)),
+                          Tab(icon: Icon(Icons.account_circle_outlined)),
+                        ],
                       ),
                     ),
+                  ],
+                  body: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      GridView.count(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 3.0,
+                        mainAxisSpacing: 3.0,
+                        children: List.generate(
+                            20,
+                            (index) =>
+                                Image.network('https://picsum.photos/200')),
+                      ),
+                      Center(
+                        child: Text('Live'),
+                      ),
+                      Center(
+                        child: Text('Profile'),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -69,9 +69,7 @@ class HomePage extends StatelessWidget {
                   itemBuilder: (context, index) => Column(
                     children: [
                       PostCard(),
-                      SizedBox(
-                          height:
-                              8.0), // Add a small space (adjust height as needed)
+                      SizedBox(height: 8.0),
                     ],
                   ),
                 ),

@@ -1,93 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:igclone_flutter/utils/constant/search_json.dart';
+import 'package:igclone_flutter/components/CategoryStoryItemWidget.dart';
+
+/*
+Title:DiscoverPageScreen
+Purpose:DiscoverPageScreen
+Created By:Kalpesh Khandla
+*/
 
 class DiscoverPage extends StatefulWidget {
   @override
   _DiscoverPageState createState() => _DiscoverPageState();
 }
 
-class _DiscoverPageState extends State<DiscoverPage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late ScrollController _scrollController;
-  late double _scrollOffset;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
-    _scrollController = ScrollController();
-    _scrollOffset = 0;
-    _scrollController.addListener(() {
-      setState(() {
-        _scrollOffset = _scrollController.offset;
-      });
-    });
-  }
-
+class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.white,
-            title: Text(
-              'igClone',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Billabong',
-                fontSize: 32,
+    return getBody();
+  }
+
+  Widget getBody() {
+    var size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+        child: Column(
+      children: <Widget>[
+        SafeArea(
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 15,
               ),
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.add_box_outlined),
+              Container(
+                width: size.width - 30,
+                height: 45,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[600],
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  cursorColor: Colors.white.withOpacity(0.3),
+                ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.favorite_border_outlined),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.send_outlined),
-              ),
+              SizedBox(
+                width: 15,
+              )
             ],
-            floating: true,
-            pinned: true,
-            snap: true,
-            bottom: TabBar(
-              controller: _tabController,
-              indicatorColor: Colors.black,
-              tabs: [
-                Tab(icon: Icon(Icons.grid_on_outlined)),
-                Tab(icon: Icon(Icons.live_tv_outlined)),
-                Tab(icon: Icon(Icons.account_circle_outlined)),
-              ],
-            ),
           ),
-        ],
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 3.0,
-              mainAxisSpacing: 3.0,
-              children: List.generate(
-                  20, (index) => Image.network('https://picsum.photos/200')),
-            ),
-            Center(
-              child: Text('Live'),
-            ),
-            Center(
-              child: Text('Profile'),
-            ),
-          ],
         ),
-      ),
-    );
+        SizedBox(
+          height: 15,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Wrap(
+          spacing: 1,
+          runSpacing: 1,
+          children: List.generate(searchImages.length, (index) {
+            return Container(
+              width: (size.width - 3) / 3,
+              height: (size.width - 3) / 3,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(searchImages[index]),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }),
+        )
+      ],
+    ));
   }
 }
